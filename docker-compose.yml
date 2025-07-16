@@ -1,0 +1,57 @@
+
+services:
+  spark-master:
+    hostname: spark-master
+    build:
+      context: .
+    image: spark
+    container_name: spark-master
+    restart: always
+    environment:
+      - nodeType=master
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=all
+    ports:
+      - "4040:4040" # spark ui
+      - "4080:8080"
+      - "8998:8998" # livy rest
+      - "8899:8899" # jupyter
+    volumes:
+      - jupyter-data:/opt/notebook/data
+      - jupyter-scripts:/opt/notebook/scripts
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    networks:
+      - cluster
+
+  spark-slave:
+    depends_on:
+      - spark-master
+    image: spark
+    container_name: spark-slave
+    restart: always
+    environment:
+      - nodeType=slave
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=all
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    networks:
+      - cluster
+
+networks:
+  cluster:
+
+volumes:
+  jupyter-scripts:
+  jupyter-data:
