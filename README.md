@@ -6,6 +6,10 @@
 * Tensorflow GPU
 * Apache Spark GPU
 
+Spark Master UI	http://localhost:4080
+Spark Jobs	http://localhost:4040
+Jupyter notebook	http://localhost:8899
+
 ## Test Tensorflow GPU
 
 

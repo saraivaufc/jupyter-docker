@@ -68,6 +68,7 @@ COPY ./bash_files/* /root/
 COPY ./spark-env.sh ./spark/conf/
 COPY ./spark-defaults.conf ./spark/conf/
 COPY ./getGpusResources.sh ./spark/conf/
+RUN chmod +x ./spark/conf/getGpusResources.sh
 
 # ENTRYPOINT
 COPY ./docker-entrypoint.sh docker-entrypoint.sh
